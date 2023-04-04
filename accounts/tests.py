@@ -4,6 +4,7 @@ from django.urls import reverse
 
 User = get_user_model()
 
+
 class TestSignupView(TestCase):
 
     def setUp(self):
