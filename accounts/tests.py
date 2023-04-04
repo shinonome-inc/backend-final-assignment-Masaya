@@ -7,6 +7,7 @@ User = get_user_model()
 
 class TestSignupView(TestCase):
 
+
     def setUp(self):
         self.url = reverse("accounts:signup")
 
