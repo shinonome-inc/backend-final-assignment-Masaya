@@ -3,8 +3,6 @@ from django.test import TestCase
 from django.urls import reverse
 
 User = get_user_model()
-
-
 class TestSignupView(TestCase):
     def setUp(self):
         self.url = reverse("accounts:signup")
@@ -96,7 +94,7 @@ class TestSignupView(TestCase):
         self.assertIn("このフィールドは必須です。", form.errors["password2"])
 
     def test_failure_post_with_duplicated_user(self):
-        # 既存のユーザーのデータ
+    
         duplicated_user_data = {
             "username": "testuser",
             "email": "test@test.com",
@@ -182,8 +180,6 @@ class TestSignupView(TestCase):
         self.assertEqual(User.objects.all().count(), 0)
         self.assertFalse(form.is_valid())
         self.assertIn("確認用パスワードが一致しません。", form.errors["password2"])
-
-
 # class TestLoginView(TestCase):
 #     def test_success_get(self):
 
