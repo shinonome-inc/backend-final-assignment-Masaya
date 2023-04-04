@@ -4,6 +4,7 @@ from django.urls import reverse
 
 User = get_user_model()
 class TestSignupView(TestCase):
+    
     def setUp(self):
         self.url = reverse("accounts:signup")
 
@@ -87,14 +88,13 @@ class TestSignupView(TestCase):
         response = self.client.post(self.url, empty_password_data)
         form = response.context["form"]
 
-        self.assertEqual(response.status_code,200)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(User.objects.all().count(), 0)
         self.assertFalse(form.is_valid())
         self.assertIn("このフィールドは必須です。", form.errors["password1"])
         self.assertIn("このフィールドは必須です。", form.errors["password2"])
 
     def test_failure_post_with_duplicated_user(self):
-    
         duplicated_user_data = {
             "username": "testuser",
             "email": "test@test.com",
@@ -137,8 +137,7 @@ class TestSignupView(TestCase):
         self.assertEqual(User.objects.all().count(), 0)
         self.assertFalse(form.is_valid())
         self.assertIn("このパスワードは短すぎます。最低 8 文字以上必要です。", form.errors["password2"])
-       
-
+     
     def test_failure_post_with_password_similar_to_username(self):
         password_similar_to_username_data = {
             "username": "testuser",
@@ -153,7 +152,6 @@ class TestSignupView(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("このパスワードは ユーザー名 と似すぎています。", form.errors["password2"])
 
-
     def test_failure_post_with_only_numbers_password(self):
         only_numbers_password_data = {
             "username": "testuser",
@@ -167,7 +165,6 @@ class TestSignupView(TestCase):
         self.assertEqual(User.objects.all().count(), 0)
         self.assertFalse(form.is_valid())
         self.assertIn("このパスワードは数字しか使われていません。", form.errors["password2"])
-
 
     def test_failure_post_with_mismatch_password(self):
         with_mismatch_password_data = {
