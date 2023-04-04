@@ -139,7 +139,7 @@ class TestSignupView(TestCase):
         self.assertEqual(User.objects.all().count(), 0)
         self.assertFalse(form.is_valid())
         self.assertIn("このパスワードは短すぎます。最低 8 文字以上必要です。", form.errors["password2"])
-        # password1だとエラーが出るのはなぜ?
+       
 
     def test_failure_post_with_password_similar_to_username(self):
         password_similar_to_username_data = {
