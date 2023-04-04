@@ -3,14 +3,17 @@ from django.test import TestCase
 from django.urls import reverse
 
 User = get_user_model()
+
 class TestSignupView(TestCase):
     def setUp(self):
         self.url = reverse("accounts:signup")
+
 
     def test_success_get(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "accounts/signup.html")
+
 
     def test_success_post(self):
         valid_data = {
@@ -30,6 +33,7 @@ class TestSignupView(TestCase):
         self.assertTrue(User.objects.filter(username=valid_data["username"]).exists())
         self.assertIn(SESSION_KEY, self.client.session)
 
+
     def test_failure_post_with_empty_form(self):
         invalid_data = {
             "username": "",
@@ -47,6 +51,7 @@ class TestSignupView(TestCase):
         self.assertIn("このフィールドは必須です。", form.errors["password1"])
         self.assertIn("このフィールドは必須です。", form.errors["password2"])
 
+
     def test_failure_post_with_empty_username(self):
         empty_user_data = {
             "username": "",
@@ -61,6 +66,7 @@ class TestSignupView(TestCase):
         self.assertEqual(User.objects.all().count(), 0)
         self.assertFalse(form.is_valid())
         self.assertIn("このフィールドは必須です。", form.errors["username"])
+
 
     def test_failure_post_with_empty_email(self):
         empty_email_data = {
@@ -77,6 +83,7 @@ class TestSignupView(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("このフィールドは必須です。", form.errors["email"])
 
+
     def test_failure_post_with_empty_password(self):
         empty_password_data = {
             "username": "testuser",
@@ -87,11 +94,12 @@ class TestSignupView(TestCase):
         response = self.client.post(self.url, empty_password_data)
         form = response.context["form"]
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code,200)
         self.assertEqual(User.objects.all().count(), 0)
         self.assertFalse(form.is_valid())
         self.assertIn("このフィールドは必須です。", form.errors["password1"])
         self.assertIn("このフィールドは必須です。", form.errors["password2"])
+
 
     def test_failure_post_with_duplicated_user(self):
     
@@ -110,6 +118,7 @@ class TestSignupView(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("同じユーザー名が既に登録済みです。", form.errors["username"])
 
+
     def test_failure_post_with_invalid_email(self):
         invalid_email_data = {
             "username": "testuser",
@@ -124,12 +133,13 @@ class TestSignupView(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("有効なメールアドレスを入力してください。", form.errors["email"])
 
+
     def test_failure_post_with_too_short_password(self):
         too_short_password_data = {
             "username": "testuser",
-            "email": "test@test.com",
+            "email":"test@test.com",
             "password1": "short",
-            "password2": "short",
+            "password2":"short",
         }
         response = self.client.post(self.url, too_short_password_data)
         form = response.context["form"]
@@ -153,6 +163,7 @@ class TestSignupView(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("このパスワードは ユーザー名 と似すぎています。", form.errors["password2"])
 
+
     def test_failure_post_with_only_numbers_password(self):
         only_numbers_password_data = {
             "username": "testuser",
@@ -167,6 +178,7 @@ class TestSignupView(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("このパスワードは数字しか使われていません。", form.errors["password2"])
 
+
     def test_failure_post_with_mismatch_password(self):
         with_mismatch_password_data = {
             "username": "testuser",
@@ -180,6 +192,8 @@ class TestSignupView(TestCase):
         self.assertEqual(User.objects.all().count(), 0)
         self.assertFalse(form.is_valid())
         self.assertIn("確認用パスワードが一致しません。", form.errors["password2"])
+
+
 # class TestLoginView(TestCase):
 #     def test_success_get(self):
 

@@ -10,6 +10,7 @@ class SignUpView(CreateView):
     template_name = "accounts/signup.html"
     success_url = reverse_lazy("tweets:home")
 
+
     def form_valid(self, form):
         response = super().form_valid(form)
         username = form.cleaned_data.get("username")
@@ -17,3 +18,4 @@ class SignUpView(CreateView):
         user = authenticate(self.request, username=username, password=password)
         login(self.request, user)
         return response
+    
