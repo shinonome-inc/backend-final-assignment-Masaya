@@ -9,3 +9,4 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ("username", "email")
 
+
