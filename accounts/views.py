@@ -1,11 +1,11 @@
 from django.conf import settings
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView
 
-from .forms import LoginForm, SignUpForm
+from .forms import SignUpForm
 from .models import User
 
 
@@ -23,12 +23,11 @@ class SignUpView(CreateView):
         return response
 
 
-class LoginView(LoginView):
+class LoginView(auth_views.LoginView):
     template_name = "accounts/login.html"
-    form_class = LoginForm
 
 
-class LogoutView(LogoutView):
+class LogoutView(auth_views.LogoutView):
     pass
 
 
