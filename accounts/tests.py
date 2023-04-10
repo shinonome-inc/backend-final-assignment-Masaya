@@ -191,6 +191,7 @@ class TestLoginView(TestCase):
             password="testpassword",
         )
         self.url = reverse("accounts:login")
+
     def test_success_get(self):
         response = self.client.get(self.url)
         self.assertEquals(response.status_code, 200)
@@ -208,19 +209,19 @@ class TestLoginView(TestCase):
         self.assertIn(SESSION_KEY, self.client.session)
 
     def test_failure_post_with_not_exists_user(self):
-         data = {
+        data = {
             "username": "test2",
             "password": "testpassword",
         }
-         response = self.client.post(self.url, data)
-         self.assertEquals(response.status_code, 200)
-         form = response.context["form"]
-         self.assertFalse(form.is_valid())
-         self.assertEqual(
+        response = self.client.post(self.url, data)
+        self.assertEquals(response.status_code, 200)
+        form = response.context["form"]
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
             form.errors["__all__"],
             ["正しいユーザー名とパスワードを入力してください。どちらのフィールドも大文字と小文字は区別されます。"],
         )
-         self.assertNotIn(SESSION_KEY, self.client.session)
+        self.assertNotIn(SESSION_KEY, self.client.session)
 
     def test_failure_post_with_empty_password(self):
         empty_data = {
@@ -255,7 +256,6 @@ class TestLogoutView(TestCase):
             target_status_code=200,
         )
         self.assertNotIn(SESSION_KEY, self.client.session)
-
 
 
 # class TestUserProfileView(TestCase):

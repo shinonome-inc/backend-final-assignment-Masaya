@@ -1,11 +1,13 @@
 from django.conf import settings
 from django.contrib.auth import authenticate, login
-from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView,DetailView
 from django.contrib.auth.views import LoginView
-from .forms import SignUpForm, LoginForm
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView
+
+from .forms import LoginForm, SignUpForm
 from .models import User
+
 
 class SignUpView(CreateView):
     form_class = SignUpForm
@@ -20,16 +22,19 @@ class SignUpView(CreateView):
         login(self.request, user)
         return response
 
+
 class LoginView(LoginView):
-    template_name = 'accounts/login.html'
+    template_name = "accounts/login.html"
     form_class = LoginForm
+
 
 # class LogoutView(LogoutView):
 #     template_name = ''
 #     form_class = LoginForm
 
-class UserProfileView(LoginRequiredMixin,DetailView):
+
+class UserProfileView(LoginRequiredMixin, DetailView):
     model = User
-    template_name ="accounts/profile.html"
-    slug_field ="username"
-    slug_url_kwarg="username"
+    template_name = "accounts/profile.html"
+    slug_field = "username"
+    slug_url_kwarg = "username"
