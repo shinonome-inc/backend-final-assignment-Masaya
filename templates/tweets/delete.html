@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}tweets_delete{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <p>本当にこの投稿を削除してよろしいですか？</p>
+    <p>{{ tweet.user.username }}</p>
+    <p>{{ tweet.content }}</p>
+    <p>{{ tweet.created_at }}</p>
+    <button type="submit">削除</button>
+</form>
+{% endblock %}

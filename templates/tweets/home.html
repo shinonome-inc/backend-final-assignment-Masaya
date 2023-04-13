@@ -1,7 +1,23 @@
-{% extends "base.html" %} ← base.htmlを継承
+{% extends "base.html" %} 
 
-{% block title %}Home{% endblock %} ← titleを入れる
+{% block title %}Home{% endblock %} 
 
 {% block content %}
-<h1>Homeです</h1>
+<h1>Home画面</h1>
+<h2>ユーザー名：{{user.username}}</h2>
+<p><a href="{% url 'tweets:create' %}">ツイートする！</a></p>
+
+<h2>投稿一覧</h2>
+<div >
+      {% for item in object_list %}
+      <div>
+          <p>タイトル：{{item.title}}</a></p>
+          <p>内容：{{item.content}}</a></p>
+          <p>投稿者：{{item.user.username}}</p>    
+          
+      </div>
+      {% endfor %}
+</div>
+
+</div>
 {% endblock %}
