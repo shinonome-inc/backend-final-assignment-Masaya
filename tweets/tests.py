@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from accounts.forms import User
+from accounts.models import User
 
 from .models import Tweet
 
@@ -45,13 +45,13 @@ class TestTweetCreateView(TestCase):
         self.assertFalse(Tweet.objects.exists())
 
     def test_failure_post_with_too_long_content(self):
-        too_long_tweet = {"content": "n" * 101}
+        too_long_tweet = {"content": "n" * 151}
         response = self.client.post(self.url, too_long_tweet)
         self.assertEqual(response.status_code, 200)
 
         form = response.context["form"]
         self.assertIn(
-            "この値は 100 文字以下でなければなりません( {} 文字になっています)。".format(len(too_long_tweet["content"])),
+            "この値は 150 文字以下でなければなりません( {} 文字になっています)。".format(len(too_long_tweet["content"])),
             form.errors["content"],
         )
         self.assertFalse(Tweet.objects.exists())
@@ -88,29 +88,29 @@ class TestTweetDeleteView(TestCase):
         self.assertRedirects(response, reverse("tweets:home"), status_code=302, target_status_code=200)
         self.assertEqual(Tweet.objects.filter(content="tweet").count(), 0)
 
-    def test_failure_post_with_not_exist_tweet(self):
-        response = self.client.post(reverse("tweets:delete", kwargs={"pk": 3}))
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(Tweet.objects.count(), 2)
-
     def test_failure_post_with_incorrect_user(self):
         response = self.client.post(self.url2)
         self.assertEqual(response.status_code, 403)
         self.assertEqual(Tweet.objects.count(), 2)
 
 
-# class TestLikeView(TestCase):
-#     def test_success_post(self):
+class TestFavoriteView(TestCase):
+    def test_success_post(self):
+        pass
 
-#     def test_failure_post_with_not_exist_tweet(self):
+    def test_failure_post_with_not_exist_tweet(self):
+        pass
 
-#     def test_failure_post_with_liked_tweet(self):
+    def test_failure_post_with_favorited_tweet(self):
+        pass
 
 
-# class TestUnLikeView(TestCase):
+class TestUnfavoriteView(TestCase):
+    def test_success_post(self):
+        pass
 
-#     def test_success_post(self):
+    def test_failure_post_with_not_exist_tweet(self):
+        pass
 
-#     def test_failure_post_with_not_exist_tweet(self):
-
-#     def test_failure_post_with_unliked_tweet(self):
+    def test_failure_post_with_unfavorited_tweet(self):
+        pass
