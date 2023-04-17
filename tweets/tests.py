@@ -93,6 +93,11 @@ class TestTweetDeleteView(TestCase):
         self.assertEqual(response.status_code, 403)
         self.assertEqual(Tweet.objects.count(), 2)
 
+    def test_failure_post_with_not_exist_tweet(self):
+        response = self.client.post(reverse("tweets:delete", kwargs={"pk": 99}))
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(Tweet.objects.count(), 2)
+
 
 class TestFavoriteView(TestCase):
     def test_success_post(self):

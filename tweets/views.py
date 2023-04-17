@@ -28,10 +28,8 @@ class TweetDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = "tweets/delete.html"
     success_url = reverse_lazy("tweets:home")
 
-    def test_func(self, **kwargs):
-        pk = self.kwargs["pk"]
-        post = Tweet.objects.get(pk=pk)
-        return post.user == self.request.user
+    def test_func(self):
+        return self.get_object().user == self.request.user
 
 
 class TweetDetailView(LoginRequiredMixin, DetailView):
