@@ -5,8 +5,22 @@
     <title>{% block title %}Twitter Clone{% endblock %}</title>
   </head>
 
-  <body>   
-    {% block content %}
-    {% endblock %}
+  <body>
+    <header>
+      <h1>Twitter Clone</h1>
+     
+      <div>
+        {% if user.is_authenticated %}
+        <a href="{% url 'tweets:home' %}">Homeへ</a>
+       
+        <p><a href="{% url 'accounts:logout' %}">ログアウト</a > </p>
+  
+        {% else %}
+        <a href="{% url 'accounts:signup' %}">サインアップ</a>
+        <a href="{% url 'accounts:login' %}">ログイン</a>
+        {% endif %}
+      </div>
+    </header>
+    {% block content %} {% endblock %}
   </body>
 </html>
