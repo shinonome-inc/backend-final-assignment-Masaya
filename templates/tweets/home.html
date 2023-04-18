@@ -5,15 +5,16 @@
 {% block content %}
 <h1>Home画面</h1>
 <h2>ユーザー名：{{user.username}}</h2>
+<p><a href="{% url 'accounts:user_profile' user.username %}">ユーザー情報へ</a ></p>
 <p><a href="{% url 'tweets:create' %}">ツイートする！</a></p>
 
 <h2>投稿一覧</h2>
 <div >
       {% for tweet in tweets %}
       <div>
-          <p>タイトル：{{tweet.title}}</a></p>
+          <p>タイトル：<a href="{% url 'tweets:detail' tweet.pk %}">{{tweet.title}}</a></p>
           <p>内容：{{tweet.content}}</a></p>
-          <p>投稿者：{{tweet.user.username}}</p>    
+          <p>投稿者：<a href="{% url 'accounts:user_profile' tweet.user.username %}">{{tweet.user.username}}</p>    
           
       </div>
       {% endfor %}
