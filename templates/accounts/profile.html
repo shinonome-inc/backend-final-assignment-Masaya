@@ -6,7 +6,7 @@
 {% if user.username == request.user.username %}
 <div>
   <br>
-  <a href="{% url 'accounts:followingList' user.username %}">フォロー数：{{ following_count }}</a>
+  <a href="{% url 'accounts:following_list' user.username %}">フォロー数：{{ following_count }}</a>
   <br>
   <a href="{% url 'accounts:follower_list' user.username %}">フォロワー数：{{ follower_count }}</a>
 </div>

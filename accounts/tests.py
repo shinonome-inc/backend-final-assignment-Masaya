@@ -279,14 +279,18 @@ class TestUserProfileView(TestCase):
         self.assertEqual(response.context["follower_count"], FollowUser.objects.filter(following=self.user1).count())
 
 
-# class TestUserProfileEditView(TestCase):
-#     def test_success_get(self):
+class TestUserProfileEditView(TestCase):
+    def test_success_get(self):
+        pass
 
-#     def test_success_post(self):
+    def test_success_post(self):
+        pass
 
-#     def test_failure_post_with_not_exists_user(self):
+    def test_failure_post_with_not_exists_user(self):
+        pass
 
-#     def test_failure_post_with_incorrect_user(self):
+    def test_failure_post_with_incorrect_user(self):
+        pass
 
 
 class TestFollowView(TestCase):
