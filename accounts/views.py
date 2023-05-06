@@ -50,10 +50,11 @@ class UserProfileView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["mytweet"] = Tweet.objects.select_related("self.user").filter(user=self.user)
+        context["user"] = self.user
         context["is_following"] = FollowUser.objects.filter(follower=self.request.user, following=self.user)
         context["following_count"] = FollowUser.objects.filter(follower=self.user).count()
         context["follower_count"] = FollowUser.objects.filter(following=self.user).count()
+        return context
 
 
 class FollowView(LoginRequiredMixin, RedirectView):
