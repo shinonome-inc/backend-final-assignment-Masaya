@@ -45,17 +45,15 @@ class UserProfileView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs["username"])
+        self.user = user
         return Tweet.objects.select_related("user").filter(user=user)
 
     def get_context_data(self, **kwargs):
-        user = get_object_or_404(User, username=self.kwargs["username"])
         context = super().get_context_data(**kwargs)
-        context["mytweet"] = Tweet.objects.select_related("user").filter(user=user)
-        context["is_following"] = FollowUser.objects.filter(follower=self.request.user, following=user)
-        context["following_count"] = FollowUser.objects.filter(follower=user).count()
-        context["follower_count"] = FollowUser.objects.filter(following=user).count()
-
-        return context
+        context["mytweet"] = Tweet.objects.select_related("self.user").filter(user=self.user)
+        context["is_following"] = FollowUser.objects.filter(follower=self.request.user, following=self.user)
+        context["following_count"] = FollowUser.objects.filter(follower=self.user).count()
+        context["follower_count"] = FollowUser.objects.filter(following=self.user).count()
 
 
 class FollowView(LoginRequiredMixin, RedirectView):
