@@ -99,14 +99,12 @@ class FollowingListView(LoginRequiredMixin, ListView):
             User,
             username=self.kwargs.get("username"),
         )
+        self.user = target_user
         return target_user.follower.select_related("following").order_by("-created_at")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["user"] = get_object_or_404(
-            User,
-            username=self.kwargs["username"],
-        )
+        context["user"] = self.user
         return context
 
 
@@ -119,12 +117,10 @@ class FollowerListView(LoginRequiredMixin, ListView):
             User,
             username=self.kwargs.get("username"),
         )
+        self.user = target_user
         return target_user.following.select_related("follower").order_by("-created_at")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["user"] = get_object_or_404(
-            User,
-            username=self.kwargs["username"],
-        )
+        context["user"] = self.user
         return context
