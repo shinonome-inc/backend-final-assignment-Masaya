@@ -13,9 +13,8 @@
       {% for tweet in tweets %}
       <div>
           <p>タイトル：<a href="{% url 'tweets:detail' tweet.pk %}">{{tweet.title}}</a></p>
-          <p>内容：{{tweet.content}}</a></p>
-          <p>投稿者：<a href="{% url 'accounts:user_profile' tweet.user.username %}">{{tweet.user.username}}</p>    
-          
+          <p>内容：{{tweet.content}}</p>
+          <p>投稿者：<a href="{% url 'accounts:user_profile' tweet.user.username %}">{{tweet.user.username}}</a></p>    
       </div>
       {% endfor %}
 </div>
