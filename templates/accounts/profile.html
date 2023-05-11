@@ -3,17 +3,38 @@
 
 {% block content %}
 <h1>ユーザー名：{{user.username}}</h1>
+{% if user.username == request.user.username %}
 <div>
+  <br>
+  <a href="{% url 'accounts:following_list' user.username %}">フォロー数：{{ following_count }}</a>
+  <br>
+  <a href="{% url 'accounts:follower_list' user.username %}">フォロワー数：{{ follower_count }}</a>
+</div>
+{% endif %}
+<div>
+  <form method="POST">
+    {% csrf_token %}
+    {% if user.username != request.user.username %}
+    {% if is_following %}
+    <button type="submit" formaction="{% url 'accounts:unfollow' user.username %}">フォロー解除</button>
+    {% else %}
+    <button type="submit" formaction="{% url 'accounts:follow' user.username %}">フォロー</button>
+    {% endif %}
+    {% endif %}
+  </form>
+</div>
+
+
   <br>
   <h3>過去のツイート一覧</h3>
   
   <div >
     {% for item in object_list %}
     <div >
-        <p>タイトル：<a href="#">{{item.title}}</a></p>
+        <p>タイトル：<a href="{% url 'tweets:detail' item.pk %}">{{item.title}}</a></p>
         <p>内容：{{item.content}}</a></p>
         <p>投稿者：{{item.user.username}}</p>    
     </div>
     {% endfor %}
-
+  </div>
 {% endblock %}
