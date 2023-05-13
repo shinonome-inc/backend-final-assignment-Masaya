@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, RedirectView
 
-from tweets.models import Tweet
+from tweets.models import Tweet, TweetLike
 
 from .forms import SignUpForm
 from .models import FollowUser, User
@@ -46,14 +46,22 @@ class UserProfileView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs["username"])
         self.user = user
-        return Tweet.objects.select_related("user").filter(user=user)
-
+        return (
+            Tweet.objects.select_related("user")
+            .prefetch_related("liked_tweet")
+            .filter(user__username=self.kwargs.get("username"))
+            .order_by("-created_at")
+        )
+       
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["user"] = self.user
         context["is_following"] = FollowUser.objects.filter(follower=self.request.user, following=self.user)
         context["following_count"] = FollowUser.objects.filter(follower=self.user).count()
         context["follower_count"] = FollowUser.objects.filter(following=self.user).count()
+        context["liked_list"] = (
+            TweetLike.objects.prefetch_related("tweet").filter(user=self.request.user).values_list("tweet", flat=True)
+        )
         return context
 
 
