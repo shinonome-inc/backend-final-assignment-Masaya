@@ -45,7 +45,7 @@ class TweetDetailView(LoginRequiredMixin, DetailView):
     template_name = "tweets/detail.html"
     model = Tweet
     queryset = Tweet.objects.select_related("user")
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         liked_list = (
