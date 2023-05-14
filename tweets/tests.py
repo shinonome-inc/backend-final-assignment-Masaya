@@ -99,7 +99,7 @@ class TestTweetDeleteView(TestCase):
         self.assertEqual(Tweet.objects.count(), 2)
 
 
-class TestFavoriteView(TestCase):
+class TestLikeView(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpassword")
         self.client.login(username="testuser", password="testpassword")
@@ -123,7 +123,7 @@ class TestFavoriteView(TestCase):
         self.assertEqual(TweetLike.objects.count(), 1)
 
 
-class TestUnfavoriteView(TestCase):
+class TestUnLikeView(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpassword")
         self.client.login(username="testuser", password="testpassword")
