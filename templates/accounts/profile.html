@@ -29,12 +29,66 @@
   <h3>過去のツイート一覧</h3>
   
   <div >
-    {% for item in object_list %}
+    {% for tweet in tweets %}
     <div >
-        <p>タイトル：<a href="{% url 'tweets:detail' item.pk %}">{{item.title}}</a></p>
-        <p>内容：{{item.content}}</a></p>
-        <p>投稿者：{{item.user.username}}</p>    
+      <p>タイトル：<a href="{% url 'tweets:detail' tweet.pk %}">{{tweet.title}}</a></p>
+      <p>内容：{{tweet.content}}</p>
+      <p>投稿者：<a href="{% url 'accounts:user_profile' tweet.user.username %}">{{tweet.user.username}}</a></p>    
+    </div>
+    {% if tweet.id in liked_list %}
+    <button id="tweet-{{tweet.id}}" onclick="changeLike(id)" data-url="{% url 'tweets:unlike' tweet.id %}">いいねを取り消す</button>
+    {% else %}
+    <button id="tweet-{{tweet.id}}" onclick="changeLike(id)" data-url="{% url 'tweets:like' tweet.id %}">いいね</button>
+    {% endif %}
+    <span class="count_{{tweet.id}}">{{tweet.liked_tweet.count}}</span><a>いいね</a>
+        {% if tweet.user == request.user %}
+        <p>
+            <a href="{% url 'tweets:delete' tweet.pk %}">削除する</a>
+        </p>
+        {% endif %}
     </div>
     {% endfor %}
   </div>
+  <script>
+    const getCookie = (name) => {
+        if (document.cookie && document.cookie !== '') {
+            for (const cookie of document.cookie.split(';')) {
+                const [key, value] = cookie.trim().split('=')
+                if (key === name) {
+                    return decodeURIComponent(value)
+                }
+            }
+        }
+    }
+    const csrftoken = getCookie('csrftoken')
+  
+    const changeLike = async (id) => {
+        const like_button = document.querySelector("#" + id)
+        const url = like_button.dataset.url;
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken,
+            }
+        });
+        const tweet_data = await response.json();
+        changeStyle(tweet_data, like_button);
+    }
+  
+    const changeStyle = (tweet_data, like_button) => {
+        const like_count = document.querySelector(".count_" + tweet_data.tweet_id)
+        if (tweet_data.is_liked) {
+            unlike_url = tweet_data.unlike_url;
+            like_button.setAttribute("data-url", unlike_url);
+            like_button.innerHTML = "<p>いいねを取り消す</p>";
+            like_count.textContent = tweet_data.like_count;
+        } else {
+            like_url = tweet_data.like_url;
+            like_button.setAttribute("data-url", like_url);
+            like_button.innerHTML = "<p>いいね</p>";
+            like_count.textContent = tweet_data.like_count;
+        }
+    }
+  </script>
 {% endblock %}
