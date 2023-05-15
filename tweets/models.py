@@ -14,3 +14,13 @@ class Tweet(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+
+class TweetLike(models.Model):
+    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name="liked_tweet")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="liked_user")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["tweet", "user"], name="unique_like"),
+        ]
