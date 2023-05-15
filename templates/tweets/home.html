@@ -16,7 +16,7 @@
           <p>内容：{{tweet.content}}</p>
           <p>投稿者：<a href="{% url 'accounts:user_profile' tweet.user.username %}">{{tweet.user.username}}</a></p>    
           {% if tweet.id in liked_list %}
-          <button id="tweet-{{tweet.id}}" onclick="changeLike(id)" data-url="{% url 'tweets:unlike' tweet.id %}"><p>いいねを取り消す</p></button>
+          <button id="tweet-{{tweet.id}}" onclick="changeLike(id)" data-url="{% url 'tweets:unlike' tweet.id %}">いいねを取り消す</button>
           {% else %}
           <button id="tweet-{{tweet.id}}" onclick="changeLike(id)" data-url="{% url 'tweets:like' tweet.id %}">いいね</button>
           {% endif %}
