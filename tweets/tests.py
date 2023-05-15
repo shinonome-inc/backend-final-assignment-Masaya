@@ -116,7 +116,7 @@ class TestLikeView(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(TweetLike.objects.count(), 0)
 
-    def test_failure_post_with_favorited_tweet(self):
+    def test_failure_post_with_liked_tweet(self):
         TweetLike.objects.create(tweet=self.tweet, user=self.user)
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
@@ -141,7 +141,7 @@ class TestUnLikeView(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(TweetLike.objects.count(), 1)
 
-    def test_failure_post_with_unfavorited_tweet(self):
+    def test_failure_post_with_unliked_tweet(self):
         TweetLike.objects.filter(tweet=self.tweet, user=self.user).delete()
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
